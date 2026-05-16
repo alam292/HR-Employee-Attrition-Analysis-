@@ -70,16 +70,71 @@ order by TotalWorkingYears desc
 limit 10;
 
 --- 13. Group employees into tenure categories (<1yr, 1–3yr, 4–6yr, 7+yr) and count employees in each. 
+select 
+		case
+			when YearsAtCompany < 1 then ' 1 yr'
+            when YearsAtCompany between 1 and 3 then '1-3 yr'
+            when YearsAtCompany between 4 and 6 then '4-6 yr'
+		    else '7+ yr'
+		end as TenureCategory,
+        count(*) as Total_Employees
+from hr
+group by 
+		case
+			when YearsAtCompany < 1 then '1 yr'
+            when YearsAtCompany between 1 and 3 then '1-3 yr'
+            when YearsAtCompany between 4 and 6 then '4-6 yr'
+            else '7+ yr'
+		end;
+        
 --- 14. Find the average monthly income by job level and attrition status. 
+select JobLevel, Attrition, avg(MonthlyIncome) as Avg_Income
+from hr
+group by JobLevel, Attrition;
+
 --- 15. Identify the top 5 job roles with the highest number of employees who left. 
+select JobRole, count(*) as Total_leavers
+from hr
+where Attrition = 'Yes'
+group by JobRole
+order by Total_leavers desc
+limit 5;
+
 --- 16. List employees who left the company within their first year. 
+select EmployeeNumber, YearsAtCompany
+from hr
+where Attrition = 'Yes' and YearsAtCompany < 1;
+
 --- 17. Determine the median monthly income of all employees. 
+
+
 --- 18. Calculate each employee’s approximate new monthly compensation after applying their salary hike percentage. 
+select
+    EmployeeNumber,
+    MonthlyIncome,
+    PercentSalaryHike,
+    MonthlyIncome + 
+    (MonthlyIncome * PercentSalaryHike / 100.0)
+    as NewMonthlyCompensation
+from hr;
+
 --- 19. Count employees grouped by overtime status and attrition. 
+select OverTime, Attrition , count(*) as Total_Employees
+from hr
+group by  OverTime, Attrition;
+
 --- 20. Display the top 10 employees who attended the most training sessions last year. 
+select EmployeeNumber, TrainingTimesLastYear
+from hr
+order by TrainingTimesLastYear desc;
+
 --- 21. Rank employees by total working years (most experienced = rank 1). 
+
 --- 22. For each department, find employees whose monthly income is in the top 25% of that department. 
+
 --- 23. Divide employees into 10 income deciles and find attrition rate for each decile. 
+
 --- 24. Create a simple risk score based on tenure, performance, overtime, and work-life balance — and list the top 50 high-risk employees. 
+
 --- 25. Create a summary view showing, for each department and job level: total employees, number of leavers, attrition rate, and average monthly income.
 
