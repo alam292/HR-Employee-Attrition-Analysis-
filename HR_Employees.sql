@@ -129,8 +129,20 @@ from hr
 order by TrainingTimesLastYear desc;
 
 --- 21. Rank employees by total working years (most experienced = rank 1). 
+select EmployeeNumber, TotalWorkingYears,
+	   rank() over (	
+					order by TotalWorkingYears desc) as Employee_Rank
+from hr;
 
 --- 22. For each department, find employees whose monthly income is in the top 25% of that department. 
+select * from (
+				select EmployeeNumber, Department, MonthlyIncome,
+                ntile(4) over(
+								partition by Department
+                                order by MonthlyIncome desc) 
+                                as Income_Quartile
+				from hr) t
+where Income_Quartile = 1;
 
 --- 23. Divide employees into 10 income deciles and find attrition rate for each decile. 
 
