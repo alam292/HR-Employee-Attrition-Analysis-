@@ -106,7 +106,8 @@ from hr
 where Attrition = 'Yes' and YearsAtCompany < 1;
 
 --- 17. Determine the median monthly income of all employees. 
-
+select EmployeeNumber, MonthlyIncome,PercentSalaryHike
+		
 
 --- 18. Calculate each employee’s approximate new monthly compensation after applying their salary hike percentage. 
 select
